@@ -1,0 +1,72 @@
+# Practical No. 05 - Weighted Least Squares using R
+
+# Q1. Study Hours and Marks
+
+cat('\014')
+study_hours <- c(2,3,4,5,6)
+marks <- c(45,50,58,65,72)
+weight <- c(1,2,3,4,5)
+df <- data.frame(study_hours,marks,weight)
+print(df)
+model <- lm(marks~study_hours,data=df,weights=weight)
+print(summary(model))
+eq <- coef(model)
+b0 <- eq[1]
+b1 <- eq[2]
+cat("\nRegression Equation: \nMarks =",b0,"+",b1,"*Study Hours\n")
+answer <- predict(model,data.frame(study_hours=7))
+cat("\nPredicted Marks=",answer)
+plot(study_hours,marks,main="WLS Regression: Marks vs Study Hours",xlab="Study Hours",ylab="Marks",pch=19)
+abline(model)
+
+
+# Q2. Advertising Expenditure and Sales
+
+cat('\014')
+advertising <- c(10,20,30,40,50)
+sales <- c(25,38,55,70,88)
+weight <- c(1,2,3,4,5)
+df <- data.frame(advertising,sales,weight)
+print(df)
+model <- lm(sales~advertising,data=df,weights=weight)
+print(summary(model))
+eq <- coef(model)
+b0 <- eq[1]
+b1 <- eq[2]
+cat("\nRegression Equation: \nSales =",b0,"+",b1,"*Advertising\n")
+answer <- predict(model,data.frame(advertising=35))
+cat("\nPredicted Sales=",answer)
+plot(advertising,sales,main="WLS Regression: Sales vs Advertising",xlab="Advertising",ylab="Sales",pch=19)
+abline(model)
+
+
+# Q3. WLS Regression using Cars Dataset
+
+cat('\014')
+data(cars)
+print(head(cars))
+w <- 1/cars$speed
+wls_model <- lm(dist~speed,data=cars,weights=w)
+print(summary(wls_model))
+eq <- coef(wls_model)
+cat("\nRegression Equation: dist =",eq[1],"+",eq[2],"*speed\n")
+answer <- predict(wls_model,data.frame(speed=20))
+cat("\nPredicted Speed =",answer)
+plot(cars$speed,cars$dist,main="WLS Regression: Stopping Distance Vs Speed",xlab="Speed",ylab="Stopping Distance",pch=19)
+abline(wls_model)
+
+
+# Q4. WLS Regression using Trees Dataset
+
+cat('\014')
+data(trees)
+print(head(trees))
+w <- 1/trees$Height
+wls_model <- lm(Volume~Girth,data=trees,weights=w)
+print(summary(wls_model))
+eq <- coef(wls_model)
+cat("\nRegression Equation: Volume =",eq[1],"+",eq[2],"*Girth\n")
+answer <- predict(wls_model,data.frame(Girth=15))
+cat("\nPredicted Volume =",answer)
+plot(trees$Girth,trees$Volume,main="WLS Regression: Volume Vs Girth",xlab="Girth",ylab="Volume",pch=19)
+abline(wls_model)
